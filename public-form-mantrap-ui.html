@@ -1102,6 +1102,13 @@
       const emptyAssets = document.getElementById("emptyAssets");
       const reportTitle = document.getElementById("reportTitle");
 
+      const scrollToFormTop = () => {
+        document.getElementById("formFrame").scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      };
+
       const getSteps = () => {
         if (!state.isTrap) return baseSteps;
         return [
@@ -1122,6 +1129,7 @@
         const steps = getSteps();
         state.currentStep = steps.some((step) => step.id === stepId) ? stepId : steps[0].id;
         render();
+        scrollToFormTop();
       };
 
       const setTrapMode = (isTrap) => {
@@ -1267,6 +1275,7 @@
         if (currentIndex > 0) {
           state.currentStep = steps[currentIndex - 1].id;
           render();
+          scrollToFormTop();
         }
       });
 
@@ -1287,6 +1296,7 @@
 
         state.currentStep = steps[currentIndex + 1].id;
         render();
+        scrollToFormTop();
       });
 
       document.getElementById("verifyBtn").addEventListener("click", () => {
