@@ -61,10 +61,6 @@
       }
 
       .app-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 16px;
         margin-bottom: 16px;
       }
 
@@ -75,17 +71,15 @@
         font-weight: 700;
       }
 
+      .app-title.hidden {
+        display: none;
+      }
+
       .app-context {
-        margin: 4px 0 0;
+        margin: 0;
         color: var(--muted);
         font-size: 14px;
         line-height: 1.45;
-      }
-
-      .top-actions {
-        display: flex;
-        align-items: center;
-        gap: 8px;
       }
 
       .button,
@@ -216,31 +210,16 @@
         min-width: 0;
       }
 
-      .form-status {
+      #reportForm {
+        min-height: 620px;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        min-height: 52px;
-        padding: 0 24px;
-        border-bottom: 1px solid var(--line);
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .form-status strong {
-        color: var(--text);
-        font-weight: 700;
-      }
-
-      .form-status .danger-text {
-        color: var(--danger);
-        font-weight: 700;
+        flex-direction: column;
       }
 
       .panel {
         display: none;
         padding: 24px;
+        flex: 1 1 auto;
       }
 
       .panel.active {
@@ -350,6 +329,25 @@
 
       .section-note p {
         margin: 0;
+      }
+
+      .guideline-list {
+        margin: 8px 0 0;
+        padding-left: 20px;
+      }
+
+      .guideline-list li {
+        margin-top: 6px;
+      }
+
+      .emergency-phone {
+        margin-top: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--text);
+        font-weight: 700;
       }
 
       .warning-note {
@@ -530,6 +528,8 @@
       }
 
       .form-actions {
+        position: sticky;
+        bottom: 0;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -538,6 +538,7 @@
         padding: 16px 24px;
         border-top: 1px solid var(--line);
         background: var(--surface);
+        z-index: 2;
       }
 
       .form-actions.first {
@@ -613,15 +614,6 @@
         .page {
           width: 100%;
           padding: 12px;
-        }
-
-        .app-header {
-          align-items: stretch;
-          flex-direction: column;
-        }
-
-        .top-actions {
-          justify-content: flex-start;
         }
 
         .form-frame {
@@ -711,12 +703,8 @@
     <main class="page">
       <header class="app-header">
         <div>
-          <h1 class="app-title">Public Form</h1>
-          <p class="app-context">Menara Sentral, Lobby B. QR code has loaded the related customer and lift assets.</p>
-        </div>
-        <div class="top-actions">
-          <button class="button-secondary" type="button">Track report</button>
-          <button class="button-secondary" type="button">BM</button>
+          <h1 class="app-title hidden" id="reportTitle">Public Form</h1>
+          <p class="app-context">Menara Sentral</p>
         </div>
       </header>
 
@@ -724,11 +712,6 @@
         <nav class="steps" id="steps" aria-label="Form steps"></nav>
 
         <div class="form-area">
-          <div class="form-status" id="formStatus">
-            <div><strong id="stepCounter">Step 1 of 7</strong></div>
-            <div id="modeText">Normal public report</div>
-          </div>
-
           <form id="reportForm">
             <section class="panel active" data-panel="situation">
               <div class="panel-header">
@@ -807,6 +790,15 @@
               <div class="panel-header">
                 <h2 class="panel-title">Contact</h2>
                 <p class="panel-copy">Provide a phone number so the call center can follow up.</p>
+              </div>
+
+              <div class="section-note warning-note hidden" id="mantrapContactGuidance">
+                <strong>Before filling this form</strong>
+                <ol class="guideline-list">
+                  <li>Press the call button inside the lift first.</li>
+                  <li>Call the emergency number if you can reach a phone.</li>
+                </ol>
+                <div class="emergency-phone">xxx-xxxx-xxxx-xxx</div>
               </div>
 
               <div class="form-grid">
@@ -1046,6 +1038,16 @@
               <div class="reference-value">PF-2026-0518</div>
             </div>
 
+            <div class="section-note warning-note hidden" id="mantrapSubmitGuideline">
+              <strong>What to do while waiting</strong>
+              <ol class="guideline-list">
+                <li>Keep the phone number you submitted available for the call center.</li>
+                <li>Tell the trapped person to stay calm and avoid forcing the lift door open.</li>
+                <li>Ask them to press the lift call button again if no one has responded.</li>
+                <li>Stay near the lift area if you are the reporter and it is safe to do so.</li>
+              </ol>
+            </div>
+
             <ul class="timeline">
               <li>
                 <div class="timeline-state">Done</div>
@@ -1103,6 +1105,7 @@
       const nextBtn = document.getElementById("nextBtn");
       const assetSearch = document.getElementById("assetSearch");
       const emptyAssets = document.getElementById("emptyAssets");
+      const reportTitle = document.getElementById("reportTitle");
 
       const getSteps = () => {
         if (!state.isTrap) return baseSteps;
@@ -1167,8 +1170,6 @@
           button.addEventListener("click", () => goToStep(step.id));
           stepsEl.appendChild(button);
         });
-
-        document.getElementById("stepCounter").textContent = `Step ${currentIndex + 1} of ${steps.length}`;
       };
 
       const renderPanels = () => {
@@ -1188,9 +1189,9 @@
 
         document.getElementById("categoryLockNote").classList.toggle("hidden", !state.isTrap);
         document.getElementById("prankWarning").classList.toggle("hidden", !state.isTrap);
-        document.getElementById("modeText").innerHTML = state.isTrap
-          ? '<span class="danger-text">Mantrap emergency report</span>'
-          : "Normal public report";
+        document.getElementById("mantrapContactGuidance").classList.toggle("hidden", !state.isTrap);
+        reportTitle.textContent = state.isTrap ? "Mantrap report" : `${state.category} report`;
+        reportTitle.classList.toggle("hidden", state.currentStep === "situation");
       };
 
       const renderAssets = () => {
@@ -1268,9 +1269,9 @@
 
         if (currentIndex === steps.length - 1) {
           document.getElementById("reportForm").classList.add("hidden");
-          document.getElementById("formStatus").classList.add("hidden");
           stepsEl.classList.add("hidden");
           document.getElementById("submitResult").classList.add("show");
+          document.getElementById("mantrapSubmitGuideline").classList.toggle("hidden", !state.isTrap);
           document.getElementById("resultTitle").textContent = state.isTrap
             ? "Emergency report submitted"
             : "Report submitted";
