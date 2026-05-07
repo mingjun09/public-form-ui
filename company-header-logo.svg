@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="180" viewBox="0 0 720 180" role="img" aria-labelledby="title desc">
+  <title id="title">Company header logo placeholder</title>
+  <desc id="desc">A simple company header image placeholder for the public form.</desc>
+  <rect width="720" height="180" fill="#ffffff"/>
+  <rect x="28" y="28" width="124" height="124" rx="8" fill="#242424"/>
+  <path d="M67 124V57h46v67" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M78 78h24M78 98h24" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+  <text x="180" y="83" font-family="sans-serif" font-size="28" font-weight="700" fill="#242424">Company Logo</text>
+  <text x="180" y="122" font-family="sans-serif" font-size="20" fill="#686864">Public Form Support</text>
+</svg>

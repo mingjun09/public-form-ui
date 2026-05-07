@@ -68,6 +68,16 @@
         margin-bottom: 16px;
       }
 
+      .company-header-img {
+        display: block;
+        width: min(360px, 100%);
+        height: auto;
+        margin-bottom: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+      }
+
       .app-title {
         margin: 0;
         font-size: 24px;
@@ -88,7 +98,6 @@
 
       .button,
       .button-secondary,
-      .button-danger,
       .button-plain {
         min-height: 40px;
         display: inline-flex;
@@ -119,12 +128,6 @@
 
       .button-secondary:hover {
         background: var(--surface-alt);
-      }
-
-      .button-danger {
-        border: 1px solid var(--danger);
-        background: var(--danger);
-        color: #fff;
       }
 
       .button-plain {
@@ -340,40 +343,55 @@
         margin: 0;
       }
 
-      .guideline-list {
-        margin: 8px 0 0;
-        padding-left: 20px;
+      .context-stack {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 18px;
       }
 
-      .guideline-list li {
-        margin-top: 6px;
-      }
-
-      .emergency-phone {
-        margin-top: 10px;
-        padding: 10px 12px;
+      .context-panel {
         border: 1px solid var(--line);
         border-radius: var(--radius);
-        background: #fff;
-        color: var(--text);
+        background: var(--surface-alt);
+      }
+
+      .context-head {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .context-title {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.35;
         font-weight: 700;
       }
 
-      .reference-image {
-        display: block;
-        width: 100%;
-        max-width: 360px;
-        height: auto;
-        margin: 12px 0 0;
-        border: 1px solid var(--line);
-        border-radius: var(--radius);
-        background: #fff;
+      .context-subtitle {
+        margin: 2px 0 0;
+        color: var(--muted);
       }
 
-      .warning-note {
-        border-color: #ead8b5;
-        background: var(--warning-bg);
-        color: var(--warning);
+      .context-details {
+        display: grid;
+        grid-template-columns: minmax(130px, 0.42fr) auto minmax(0, 1fr);
+        gap: 8px 8px;
+        margin: 0;
+        padding: 14px;
+      }
+
+      .context-details dt {
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .context-details dd {
+        margin: 0;
+        color: var(--text);
+      }
+
+      .context-sep {
+        color: var(--muted);
       }
 
       .danger-note {
@@ -521,21 +539,42 @@
         font-weight: 600;
       }
 
-      .confirm-row {
+      .captcha-row {
         display: grid;
-        grid-template-columns: 20px minmax(0, 1fr);
-        gap: 10px;
-        align-items: start;
+        grid-template-columns: 20px minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: center;
         margin-top: 16px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface-alt);
         color: var(--muted-strong);
         line-height: 1.45;
       }
 
-      .confirm-row input {
+      .captcha-row input {
         width: 16px;
         height: 16px;
         min-height: 16px;
-        margin-top: 2px;
+      }
+
+      .captcha-title {
+        display: block;
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .captcha-copy {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .captcha-mark {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
       }
 
       .form-actions {
@@ -688,6 +727,11 @@
           padding-top: 0;
         }
 
+        .context-details {
+          grid-template-columns: minmax(120px, 0.48fr) auto minmax(0, 1fr);
+          gap: 6px 6px;
+        }
+
         .timeline li {
           grid-template-columns: 1fr;
           gap: 4px;
@@ -700,8 +744,7 @@
         }
 
         .form-actions .button,
-        .form-actions .button-secondary,
-        .form-actions .button-danger {
+        .form-actions .button-secondary {
           width: 100%;
         }
       }
@@ -711,6 +754,11 @@
     <main class="page">
       <header class="app-header">
         <div>
+          <img
+            class="company-header-img"
+            alt="Company logo"
+            src="company-header-logo.svg"
+          />
           <h1 class="app-title hidden" id="reportTitle">Public Form</h1>
           <p class="app-context">Menara Sentral</p>
         </div>
@@ -721,34 +769,7 @@
 
         <div class="form-area">
           <form id="reportForm">
-            <section class="panel active" data-panel="situation">
-              <div class="panel-header">
-                <h2 class="panel-title">What is happening now?</h2>
-                <p class="panel-copy">Start here so urgent lift trap cases can be handled immediately.</p>
-              </div>
-
-              <div class="field full">
-                <div class="field-label">Is anyone trapped in the lift?</div>
-                <div class="radio-stack">
-                  <label class="radio-row">
-                    <input type="radio" name="trap" value="yes" />
-                    <span>
-                      <span class="radio-title">Yes, someone is trapped</span>
-                      <span class="radio-copy">Submit as an emergency mantrap report.</span>
-                    </span>
-                  </label>
-                  <label class="radio-row">
-                    <input type="radio" name="trap" value="no" checked />
-                    <span>
-                      <span class="radio-title">Other report</span>
-                      <span class="radio-copy">Continue with breakdown, complaint, feedback, issue, or warranty.</span>
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </section>
-
-            <section class="panel" data-panel="category">
+            <section class="panel active" data-panel="category">
               <div class="panel-header">
                 <h2 class="panel-title">Category</h2>
                 <p class="panel-copy">Select the report category.</p>
@@ -757,6 +778,12 @@
               <div class="field full">
                 <div class="field-label">Report category</div>
                 <div class="category-list">
+                  <label class="radio-row">
+                    <input type="radio" name="category" value="Mantrap" />
+                    <span>
+                      <span class="radio-title">Mantrap</span>
+                    </span>
+                  </label>
                   <label class="radio-row">
                     <input type="radio" name="category" value="Breakdown" checked />
                     <span>
@@ -788,94 +815,61 @@
                     </span>
                   </label>
                 </div>
-                <p class="help-text">Mantrap is handled from the first step and skips this category step.</p>
+                <p class="help-text">Select one category to continue.</p>
               </div>
-
-              <p class="section-note danger-note hidden" id="categoryLockNote">Category is locked to Mantrap because the report says someone is trapped.</p>
             </section>
 
-            <section class="panel" data-panel="contact">
+            <section class="panel" data-panel="general">
               <div class="panel-header">
-                <h2 class="panel-title">Contact</h2>
-                <p class="panel-copy">Provide a phone number so the call center can follow up.</p>
+                <h2 class="panel-title">General</h2>
+                <p class="panel-copy">Review the customer and project, then select the lift.</p>
               </div>
 
-              <div class="section-note warning-note hidden" id="mantrapContactGuidance">
-                <strong>Before filling this form</strong>
-                <ol class="guideline-list">
-                  <li>
-                    Try pressing the call button inside the lift first.
-                    <img
-                      class="reference-image"
-                      alt="Lift call button reference"
-                      src="lift-call-button-reference.svg"
-                    />
-                  </li>
-                  <li>Call the emergency number if you can reach a phone.</li>
-                </ol>
-                <div class="emergency-phone">xxx-xxxx-xxxx-xxx</div>
-              </div>
-
-              <div class="form-grid">
-                <div class="field full">
-                  <label for="phone">Phone number</label>
-                  <div class="phone-grid">
-                    <input id="phone" name="phone" inputmode="tel" value="+60 12-345 6789" />
-                    <button class="button-secondary" type="button" id="verifyBtn">Verify</button>
+              <div class="context-stack">
+                <section class="context-panel" aria-label="Customer information">
+                  <div class="context-head">
+                    <h3 class="context-title">Customer - C01863</h3>
+                    <p class="context-subtitle">Kagami Donut - KD-1-06052601</p>
                   </div>
-                  <p class="help-text" id="verifyText">Emergency reports can still be submitted if OTP is delayed.</p>
-                </div>
-                <div class="field">
-                  <label for="reporterName">Reporter name</label>
-                  <input id="reporterName" value="Aiman Rahman" />
-                </div>
-                <div class="field">
-                  <label for="contactMethod">Preferred contact method</label>
-                  <select id="contactMethod">
-                    <option>Phone call</option>
-                    <option>WhatsApp</option>
-                    <option>SMS</option>
-                  </select>
-                </div>
-              </div>
-            </section>
+                  <dl class="context-details">
+                    <dt>Outlet/Shop/Branch Name</dt>
+                    <dd class="context-sep">:</dd>
+                    <dd>Kagami Donut</dd>
+                    <dt>Outlet Code</dt>
+                    <dd class="context-sep">:</dd>
+                    <dd>KD-1-06052601</dd>
+                    <dt>Phone</dt>
+                    <dd class="context-sep">:</dd>
+                    <dd>-</dd>
+                    <dt>Address</dt>
+                    <dd class="context-sep">:</dd>
+                    <dd>Address not required</dd>
+                  </dl>
+                </section>
 
-            <section class="panel" data-panel="location">
-              <div class="panel-header">
-                <h2 class="panel-title">Location</h2>
-                <p class="panel-copy">Confirm the site and area related to this report.</p>
-              </div>
-
-              <div class="form-grid">
-                <div class="field">
-                  <label for="site">Site name</label>
-                  <input id="site" value="Menara Sentral" readonly />
-                  <p class="help-text">Site is fixed from the public form link.</p>
-                </div>
-                <div class="field">
-                  <label for="locationArea">Area</label>
-                  <select id="locationArea">
-                    <option>Lobby B</option>
-                    <option>Inside lift</option>
-                    <option>Car park</option>
-                    <option>Floor area</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="floor">Floor</label>
-                  <input id="floor" value="Ground floor" />
-                </div>
-                <div class="field">
-                  <label for="siteNotes">Location note</label>
-                  <input id="siteNotes" value="Near reception counter" />
-                </div>
-              </div>
-            </section>
-
-            <section class="panel" data-panel="asset">
-              <div class="panel-header">
-                <h2 class="panel-title">Asset</h2>
-                <p class="panel-copy">Select the lift, or choose unknown if you are not sure.</p>
+                <section class="context-panel" aria-label="Project information">
+                  <div class="context-head">
+                    <h3 class="context-title">Project - P00279</h3>
+                    <p class="context-subtitle">Contract 1-06052601</p>
+                  </div>
+                  <dl class="context-details">
+                    <dt>Project Seq No</dt>
+                    <dd class="context-sep">:</dd>
+                    <dd>P00279</dd>
+                    <dt>Project Title</dt>
+                    <dd class="context-sep">:</dd>
+                    <dd>Contract 1-06052601</dd>
+                    <dt>Project Category</dt>
+                    <dd class="context-sep">:</dd>
+                    <dd>Contractual</dd>
+                    <dt>Project Status</dt>
+                    <dd class="context-sep">:</dd>
+                    <dd>Processed</dd>
+                    <dt>Project Amount</dt>
+                    <dd class="context-sep">:</dd>
+                    <dd>0.00</dd>
+                  </dl>
+                </section>
               </div>
 
               <div class="field asset-search">
@@ -904,42 +898,32 @@
               <div class="empty-assets" id="emptyAssets">No exact lift match. Use Unknown lift or adjust your search.</div>
             </section>
 
-            <section class="panel" data-panel="trapped">
+            <section class="panel" data-panel="details">
               <div class="panel-header">
-                <h2 class="panel-title">Trapped Person</h2>
-                <p class="panel-copy">Add the information needed for emergency response.</p>
+                <h2 class="panel-title">Details</h2>
+                <p class="panel-copy">Provide your contact information for follow-up.</p>
               </div>
 
               <div class="form-grid">
                 <div class="field">
-                  <label for="trappedPhone">Trapped person phone number</label>
-                  <input id="trappedPhone" inputmode="tel" placeholder="+60" />
+                  <label for="reporterName">Name</label>
+                  <input id="reporterName" value="Aiman Rahman" />
                 </div>
                 <div class="field">
-                  <label for="peopleCount">Number of people trapped</label>
-                  <select id="peopleCount">
-                    <option>1 person</option>
-                    <option>2 people</option>
-                    <option>3 people</option>
-                    <option>4 or more people</option>
-                    <option>Not sure</option>
-                  </select>
+                  <label for="phone">Phone number</label>
+                  <input id="phone" name="phone" inputmode="tel" value="+60 12-345 6789" />
                 </div>
                 <div class="field">
-                  <label for="insideStatus">Where is the trapped person?</label>
-                  <select id="insideStatus">
-                    <option>Inside selected lift</option>
-                    <option>Near selected lift</option>
-                    <option>Caller reported it</option>
-                    <option>Not sure</option>
-                  </select>
+                  <label for="email">Email</label>
+                  <input id="email" type="email" value="aiman@example.com" />
                 </div>
                 <div class="field">
-                  <label for="medical">Medical condition</label>
-                  <select id="medical">
-                    <option>No / not sure</option>
-                    <option>Yes, urgent attention needed</option>
-                    <option>Child or elderly person involved</option>
+                  <label for="contactMethod">Preferred contact method</label>
+                  <select id="contactMethod">
+                    <option>Phone call</option>
+                    <option>WhatsApp</option>
+                    <option>Email</option>
+                    <option>SMS</option>
                   </select>
                 </div>
               </div>
@@ -985,40 +969,51 @@
                     <td id="summaryCategory">Breakdown</td>
                   </tr>
                   <tr>
-                    <th>Priority</th>
-                    <td id="summaryPriority">Normal response</td>
+                    <th>Customer</th>
+                    <td>Kagami Donut - KD-1-06052601</td>
                   </tr>
                   <tr>
-                    <th>Site</th>
-                    <td id="summarySite">Menara Sentral</td>
-                  </tr>
-                  <tr>
-                    <th>Area</th>
-                    <td id="summaryArea">Lobby B</td>
+                    <th>Project</th>
+                    <td>Contract 1-06052601</td>
                   </tr>
                   <tr>
                     <th>Asset</th>
                     <td id="summaryAsset">Lift L2 - Lobby B</td>
                   </tr>
                   <tr>
-                    <th>Contact</th>
+                    <th>Name</th>
+                    <td id="summaryName">Aiman Rahman</td>
+                  </tr>
+                  <tr>
+                    <th>Phone</th>
                     <td id="summaryPhone">+60 12-345 6789</td>
                   </tr>
                   <tr>
-                    <th>Reporter</th>
-                    <td id="summaryReporter">Aiman Rahman</td>
+                    <th>Email</th>
+                    <td id="summaryEmail">aiman@example.com</td>
+                  </tr>
+                  <tr>
+                    <th>When</th>
+                    <td id="summaryTimeSeen">Just now</td>
+                  </tr>
+                  <tr>
+                    <th>Attachment</th>
+                    <td id="summaryAttachment">No attachment</td>
+                  </tr>
+                  <tr>
+                    <th>Description</th>
+                    <td id="summaryDescription">Passenger says the lift stopped between floors. Door is closed and alarm bell was heard.</td>
                   </tr>
                 </tbody>
               </table>
 
-              <div class="section-note warning-note hidden" id="prankWarning">
-                <strong>Emergency misuse warning</strong>
-                <p>This report will be treated as an urgent lift trap case. The call center may contact the phone number immediately and escalate the case to the building team. False emergency reports can delay real rescue work and may be investigated.</p>
-              </div>
-
-              <label class="confirm-row">
-                <input id="truthCheck" type="checkbox" />
-                <span>I confirm the information is correct and may be used by the call center to follow up.</span>
+              <label class="captcha-row">
+                <input id="captchaCheck" type="checkbox" />
+                <span>
+                  <span class="captcha-title">Captcha verification</span>
+                  <span class="captcha-copy">I am not a robot</span>
+                </span>
+                <span class="captcha-mark">CAPTCHA</span>
               </label>
             </section>
 
@@ -1031,22 +1026,12 @@
           <section class="result" id="submitResult">
             <div class="panel-header">
               <h2 class="panel-title" id="resultTitle">Report submitted</h2>
-              <p class="panel-copy">A tracking link has been sent to the provided phone number.</p>
+              <p class="panel-copy">Your report has been submitted.</p>
             </div>
 
             <div class="reference">
               <div class="reference-label">Reference number</div>
               <div class="reference-value">PF-2026-0518</div>
-            </div>
-
-            <div class="section-note warning-note hidden" id="mantrapSubmitGuideline">
-              <strong>What to do while waiting</strong>
-              <ol class="guideline-list">
-                <li>Keep the phone number you submitted available for the call center.</li>
-                <li>Tell the trapped person to stay calm and avoid forcing the lift door open.</li>
-                <li>Ask them to press the lift call button again if no one has responded.</li>
-                <li>Stay near the lift area if you are the reporter and it is safe to do so.</li>
-              </ol>
             </div>
 
             <ul class="timeline">
@@ -1060,8 +1045,8 @@
               <li>
                 <div class="timeline-state">Current</div>
                 <div>
-                  <div class="timeline-title">Call center review</div>
-                  <div class="timeline-copy">Phone verification and dispatch are in progress.</div>
+                  <div class="timeline-title">Team review</div>
+                  <div class="timeline-copy">The submitted details are being reviewed.</div>
                 </div>
               </li>
               <li>
@@ -1080,28 +1065,22 @@
     <script>
       const state = {
         category: "Breakdown",
-        isTrap: false,
-        currentStep: "situation",
+        currentStep: "category",
         asset: "Lift L2 - Lobby B",
       };
 
       const baseSteps = [
-        { id: "situation", label: "Situation" },
         { id: "category", label: "Category" },
-        { id: "contact", label: "Contact" },
-        { id: "location", label: "Location" },
-        { id: "asset", label: "Asset" },
+        { id: "general", label: "General" },
+        { id: "details", label: "Details" },
         { id: "incident", label: "Incident" },
         { id: "review", label: "Review" },
       ];
-
-      const trapStep = { id: "trapped", label: "Trapped Person" };
 
       const stepsEl = document.getElementById("steps");
       const panels = [...document.querySelectorAll("[data-panel]")];
       const categoryRadios = [...document.querySelectorAll('input[name="category"]')];
       const assetOptions = [...document.querySelectorAll("[data-asset]")];
-      const trapRadios = [...document.querySelectorAll('input[name="trap"]')];
       const backBtn = document.getElementById("backBtn");
       const nextBtn = document.getElementById("nextBtn");
       const assetSearch = document.getElementById("assetSearch");
@@ -1116,13 +1095,7 @@
       };
 
       const getSteps = () => {
-        if (!state.isTrap) return baseSteps;
-        return [
-          baseSteps[0],
-          ...baseSteps.slice(2, 5),
-          trapStep,
-          ...baseSteps.slice(5),
-        ];
+        return baseSteps;
       };
 
       const getCurrentIndex = () => {
@@ -1138,27 +1111,21 @@
         scrollToFormTop();
       };
 
-      const setTrapMode = (isTrap) => {
-        const currentStepBeforeChange = state.currentStep;
-        state.isTrap = isTrap;
-        state.category = isTrap ? "Mantrap" : "Breakdown";
-        if (!isTrap && currentStepBeforeChange === "trapped") {
-          state.currentStep = "incident";
-        }
-        render();
-      };
-
       const syncSummary = () => {
         document.getElementById("summaryCategory").textContent = state.category;
-        document.getElementById("summaryPriority").textContent = state.isTrap
-          ? "Emergency response"
-          : "Normal response";
-        document.getElementById("summarySite").textContent = document.getElementById("site").value;
-        document.getElementById("summaryArea").textContent = document.getElementById("locationArea").value;
         document.getElementById("summaryAsset").textContent = state.asset;
-        document.getElementById("summaryPhone").textContent = document.getElementById("phone").value;
-        document.getElementById("summaryReporter").textContent =
-          document.getElementById("reporterName").value || "Not provided";
+        document.getElementById("summaryName").textContent =
+          document.getElementById("reporterName").value || "-";
+        document.getElementById("summaryPhone").textContent =
+          document.getElementById("phone").value || "-";
+        document.getElementById("summaryEmail").textContent =
+          document.getElementById("email").value || "-";
+        document.getElementById("summaryTimeSeen").textContent =
+          document.getElementById("timeSeen").value || "-";
+        document.getElementById("summaryAttachment").textContent =
+          document.getElementById("attachment").files[0]?.name || "No attachment";
+        document.getElementById("summaryDescription").textContent =
+          document.getElementById("description").value || "-";
       };
 
       const renderSteps = () => {
@@ -1200,19 +1167,12 @@
       };
 
       const renderCategory = () => {
-        trapRadios.forEach((radio) => {
-          radio.checked = radio.value === (state.isTrap ? "yes" : "no");
-        });
-
         categoryRadios.forEach((radio) => {
           radio.checked = radio.value === state.category;
         });
 
-        document.getElementById("categoryLockNote").classList.toggle("hidden", !state.isTrap);
-        document.getElementById("prankWarning").classList.toggle("hidden", !state.isTrap);
-        document.getElementById("mantrapContactGuidance").classList.toggle("hidden", !state.isTrap);
-        reportTitle.textContent = state.isTrap ? "Mantrap report" : `${state.category} report`;
-        reportTitle.classList.toggle("hidden", state.currentStep === "situation");
+        reportTitle.textContent = `${state.category} report`;
+        reportTitle.classList.remove("hidden");
       };
 
       const renderAssets = () => {
@@ -1241,11 +1201,9 @@
         backBtn.classList.toggle("hidden", isFirst);
         document.getElementById("formActions").classList.toggle("first", isFirst);
         nextBtn.textContent = isLast
-          ? state.isTrap
-            ? "Submit emergency report"
-            : "Submit report"
+          ? "Submit report"
           : "Continue";
-        nextBtn.className = isLast && state.isTrap ? "button-danger" : "button";
+        nextBtn.className = "button";
       };
 
       const render = () => {
@@ -1257,10 +1215,6 @@
         syncSummary();
       };
 
-      trapRadios.forEach((radio) => {
-        radio.addEventListener("change", () => setTrapMode(radio.value === "yes"));
-      });
-
       categoryRadios.forEach((radio) => {
         radio.addEventListener("change", () => {
           state.category = radio.value;
@@ -1271,7 +1225,8 @@
       assetOptions.forEach((option) => {
         option.addEventListener("click", () => {
           state.asset = option.dataset.asset;
-          render();
+          renderAssets();
+          syncSummary();
         });
       });
 
@@ -1293,10 +1248,7 @@
           document.getElementById("reportForm").classList.add("hidden");
           stepsEl.classList.add("hidden");
           document.getElementById("submitResult").classList.add("show");
-          document.getElementById("mantrapSubmitGuideline").classList.toggle("hidden", !state.isTrap);
-          document.getElementById("resultTitle").textContent = state.isTrap
-            ? "Emergency report submitted"
-            : "Report submitted";
+          document.getElementById("resultTitle").textContent = "Report submitted";
           return;
         }
 
@@ -1305,13 +1257,9 @@
         scrollToFormTop();
       });
 
-      document.getElementById("verifyBtn").addEventListener("click", () => {
-        document.getElementById("verifyText").textContent = "Phone verified. Status updates will be sent to this number.";
-      });
-
       assetSearch.addEventListener("input", renderAssets);
 
-      ["phone", "reporterName", "site", "locationArea"].forEach((id) => {
+      ["reporterName", "phone", "email", "timeSeen", "attachment", "description"].forEach((id) => {
         const element = document.getElementById(id);
         element.addEventListener("input", syncSummary);
         element.addEventListener("change", syncSummary);
