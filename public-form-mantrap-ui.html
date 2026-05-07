@@ -151,7 +151,7 @@
       .steps {
         border-right: 1px solid var(--line);
         background: var(--surface-alt);
-        padding: 12px;
+        padding: 0;
       }
 
       .step-button {
@@ -160,22 +160,24 @@
         grid-template-columns: 28px minmax(0, 1fr);
         align-items: center;
         gap: 8px;
-        min-height: 42px;
+        min-height: 52px;
         border: 0;
-        border-radius: 6px;
-        padding: 8px 10px;
+        border-bottom: 1px solid var(--line);
+        border-radius: 0;
+        padding: 10px 14px;
         background: transparent;
         color: var(--muted);
         text-align: left;
       }
 
       .step-button:hover {
-        background: #f1f1ef;
+        background: #f2f2ef;
         color: var(--text);
       }
 
       .step-button.active {
-        background: var(--surface-active);
+        box-shadow: inset 3px 0 0 var(--primary);
+        background: var(--surface);
         color: var(--text);
       }
 
@@ -184,9 +186,21 @@
       }
 
       .step-number {
+        width: 24px;
+        height: 24px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
         font-size: 13px;
         font-variant-numeric: tabular-nums;
         font-weight: 700;
+      }
+
+      .step-button.active .step-number {
+        border-color: var(--primary);
+        background: var(--primary);
+        color: #fff;
       }
 
       .step-label {
@@ -328,6 +342,16 @@
         line-height: 1.45;
       }
 
+      .section-note strong {
+        display: block;
+        margin-bottom: 4px;
+        color: inherit;
+      }
+
+      .section-note p {
+        margin: 0;
+      }
+
       .warning-note {
         border-color: #ead8b5;
         background: var(--warning-bg);
@@ -383,10 +407,24 @@
         line-height: 1.4;
       }
 
+      .category-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .category-list .radio-row {
+        align-items: center;
+        min-height: 46px;
+      }
+
       .phone-grid {
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 8px;
+      }
+
+      .asset-search {
+        margin-bottom: 12px;
       }
 
       .asset-list {
@@ -436,6 +474,19 @@
         font-weight: 600;
       }
 
+      .empty-assets {
+        display: none;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface-alt);
+        color: var(--muted);
+      }
+
+      .empty-assets.show {
+        display: block;
+      }
+
       .summary-table {
         width: 100%;
         border-collapse: collapse;
@@ -483,9 +534,14 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        margin-top: 24px;
-        padding-top: 18px;
+        margin-top: 0;
+        padding: 16px 24px;
         border-top: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .form-actions.first {
+        justify-content: flex-end;
       }
 
       .result {
@@ -586,6 +642,14 @@
           min-width: max-content;
           grid-template-columns: 22px max-content;
           min-height: 38px;
+          border: 1px solid var(--line);
+          border-radius: 6px;
+          padding: 7px 10px;
+        }
+
+        .step-button.active {
+          box-shadow: none;
+          border-color: var(--primary);
         }
 
         .form-status {
@@ -632,6 +696,7 @@
         .form-actions {
           align-items: stretch;
           flex-direction: column-reverse;
+          padding: 12px 16px;
         }
 
         .form-actions .button,
@@ -699,16 +764,40 @@
               </div>
 
               <div class="field full">
-                <label for="categorySelect">Report category</label>
-                <select id="categorySelect">
-                  <option>Mantrap</option>
-                  <option selected>Breakdown</option>
-                  <option>Complaint</option>
-                  <option>Feedback</option>
-                  <option>Report Issue</option>
-                  <option>Warranty</option>
-                </select>
-                <p class="help-text">Mantrap will be selected automatically if someone is trapped.</p>
+                <div class="field-label">Report category</div>
+                <div class="category-list">
+                  <label class="radio-row">
+                    <input type="radio" name="category" value="Breakdown" checked />
+                    <span>
+                      <span class="radio-title">Breakdown</span>
+                    </span>
+                  </label>
+                  <label class="radio-row">
+                    <input type="radio" name="category" value="Complaint" />
+                    <span>
+                      <span class="radio-title">Complaint</span>
+                    </span>
+                  </label>
+                  <label class="radio-row">
+                    <input type="radio" name="category" value="Feedback" />
+                    <span>
+                      <span class="radio-title">Feedback</span>
+                    </span>
+                  </label>
+                  <label class="radio-row">
+                    <input type="radio" name="category" value="Report Issue" />
+                    <span>
+                      <span class="radio-title">Report issue</span>
+                    </span>
+                  </label>
+                  <label class="radio-row">
+                    <input type="radio" name="category" value="Warranty" />
+                    <span>
+                      <span class="radio-title">Warranty</span>
+                    </span>
+                  </label>
+                </div>
+                <p class="help-text">Mantrap is handled from the first step and skips this category step.</p>
               </div>
 
               <p class="section-note danger-note hidden" id="categoryLockNote">Category is locked to Mantrap because the report says someone is trapped.</p>
@@ -785,6 +874,11 @@
                 <p class="panel-copy">Select the lift, or choose unknown if you are not sure.</p>
               </div>
 
+              <div class="field asset-search">
+                <label for="assetSearch">Search lift</label>
+                <input id="assetSearch" type="search" placeholder="Search by lift name, area, or asset ID" />
+              </div>
+
               <div class="asset-list" id="assetList">
                 <button class="asset-option selected" type="button" data-asset="Lift L2 - Lobby B">
                   <span>
@@ -806,7 +900,7 @@
                     <span class="asset-meta">Back corridor. Asset ID: ELV-2026-021</span>
                   </span>
                 </button>
-                <button class="asset-option" type="button" data-asset="Unknown lift - requires mapping">
+                <button class="asset-option" type="button" data-asset="Unknown lift - requires mapping" data-fallback="true">
                   <span>
                     <span class="asset-title">Unknown lift</span>
                     <span class="asset-meta">Use when the user only knows the site or lobby.</span>
@@ -814,6 +908,7 @@
                   <span class="asset-flag">Flag</span>
                 </button>
               </div>
+              <div class="empty-assets" id="emptyAssets">No exact lift match. Use Unknown lift or adjust your search.</div>
             </section>
 
             <section class="panel" data-panel="trapped">
@@ -923,7 +1018,10 @@
                 </tbody>
               </table>
 
-              <p class="section-note warning-note hidden" id="prankWarning">False mantrap reports may delay emergency response and may be investigated. Submit only when this is a real emergency or you genuinely believe someone is trapped.</p>
+              <div class="section-note warning-note hidden" id="prankWarning">
+                <strong>Emergency misuse warning</strong>
+                <p>This report will be treated as an urgent lift trap case. The call center may contact the phone number immediately and escalate the case to the building team. False emergency reports can delay real rescue work and may be investigated.</p>
+              </div>
 
               <label class="confirm-row">
                 <input id="truthCheck" type="checkbox" />
@@ -998,16 +1096,19 @@
 
       const stepsEl = document.getElementById("steps");
       const panels = [...document.querySelectorAll("[data-panel]")];
-      const categorySelect = document.getElementById("categorySelect");
+      const categoryRadios = [...document.querySelectorAll('input[name="category"]')];
       const assetOptions = [...document.querySelectorAll("[data-asset]")];
       const trapRadios = [...document.querySelectorAll('input[name="trap"]')];
       const backBtn = document.getElementById("backBtn");
       const nextBtn = document.getElementById("nextBtn");
+      const assetSearch = document.getElementById("assetSearch");
+      const emptyAssets = document.getElementById("emptyAssets");
 
       const getSteps = () => {
         if (!state.isTrap) return baseSteps;
         return [
-          ...baseSteps.slice(0, 5),
+          baseSteps[0],
+          ...baseSteps.slice(2, 5),
           trapStep,
           ...baseSteps.slice(5),
         ];
@@ -1081,8 +1182,9 @@
           radio.checked = radio.value === (state.isTrap ? "yes" : "no");
         });
 
-        categorySelect.value = state.category;
-        categorySelect.disabled = state.isTrap;
+        categoryRadios.forEach((radio) => {
+          radio.checked = radio.value === state.category;
+        });
 
         document.getElementById("categoryLockNote").classList.toggle("hidden", !state.isTrap);
         document.getElementById("prankWarning").classList.toggle("hidden", !state.isTrap);
@@ -1092,9 +1194,19 @@
       };
 
       const renderAssets = () => {
+        const query = assetSearch.value.trim().toLowerCase();
+        let visibleCount = 0;
+
         assetOptions.forEach((option) => {
+          const searchableText = option.textContent.toLowerCase();
+          const isFallback = option.dataset.fallback === "true";
+          const matches = isFallback || !query || searchableText.includes(query);
+          option.classList.toggle("hidden", !matches);
+          if (!isFallback && matches) visibleCount += 1;
           option.classList.toggle("selected", option.dataset.asset === state.asset);
         });
+
+        emptyAssets.classList.toggle("show", query && visibleCount === 0);
       };
 
       const renderActions = () => {
@@ -1105,6 +1217,7 @@
 
         backBtn.disabled = isFirst;
         backBtn.classList.toggle("hidden", isFirst);
+        document.getElementById("formActions").classList.toggle("first", isFirst);
         nextBtn.textContent = isLast
           ? state.isTrap
             ? "Submit emergency report"
@@ -1126,10 +1239,11 @@
         radio.addEventListener("change", () => setTrapMode(radio.value === "yes"));
       });
 
-      categorySelect.addEventListener("change", () => {
-        state.category = categorySelect.value;
-        state.isTrap = state.category === "Mantrap";
-        render();
+      categoryRadios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+          state.category = radio.value;
+          render();
+        });
       });
 
       assetOptions.forEach((option) => {
@@ -1170,6 +1284,8 @@
       document.getElementById("verifyBtn").addEventListener("click", () => {
         document.getElementById("verifyText").textContent = "Phone verified. Status updates will be sent to this number.";
       });
+
+      assetSearch.addEventListener("input", renderAssets);
 
       ["phone", "reporterName", "site", "locationArea"].forEach((id) => {
         const element = document.getElementById(id);
