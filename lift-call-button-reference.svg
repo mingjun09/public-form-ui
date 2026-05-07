@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="420" viewBox="0 0 720 420" role="img" aria-labelledby="title desc">
+  <title id="title">Lift call button reference</title>
+  <desc id="desc">A simple reference image showing the lift emergency call button.</desc>
+  <rect width="720" height="420" fill="#f7f7f5"/>
+  <rect x="170" y="42" width="380" height="336" rx="12" fill="#ffffff" stroke="#b8bab2" stroke-width="4"/>
+  <rect x="214" y="82" width="292" height="52" rx="6" fill="#242424"/>
+  <text x="360" y="116" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="700" fill="#ffffff">LIFT EMERGENCY</text>
+  <circle cx="360" cy="228" r="68" fill="#b42318" stroke="#8b1d15" stroke-width="8"/>
+  <text x="360" y="238" text-anchor="middle" font-family="sans-serif" font-size="38" font-weight="700" fill="#ffffff">CALL</text>
+  <text x="360" y="324" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="700" fill="#242424">Press and hold the call button</text>
+</svg>

@@ -146,6 +146,7 @@
         border-right: 1px solid var(--line);
         background: var(--surface-alt);
         padding: 0;
+        scroll-behavior: smooth;
       }
 
       .step-button {
@@ -348,6 +349,17 @@
         background: #fff;
         color: var(--text);
         font-weight: 700;
+      }
+
+      .reference-image {
+        display: block;
+        width: 100%;
+        max-width: 360px;
+        height: auto;
+        margin: 12px 0 0;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
       }
 
       .warning-note {
@@ -782,7 +794,14 @@
               <div class="section-note warning-note hidden" id="mantrapContactGuidance">
                 <strong>Before filling this form</strong>
                 <ol class="guideline-list">
-                  <li>Press the call button inside the lift first.</li>
+                  <li>
+                    Try pressing the call button inside the lift first.
+                    <img
+                      class="reference-image"
+                      alt="Lift call button reference"
+                      src="lift-call-button-reference.svg"
+                    />
+                  </li>
                   <li>Call the emergency number if you can reach a phone.</li>
                 </ol>
                 <div class="emergency-phone">xxx-xxxx-xxxx-xxx</div>
@@ -1132,12 +1151,16 @@
         const steps = getSteps();
         const currentIndex = getCurrentIndex();
         stepsEl.innerHTML = "";
+        let activeButton;
 
         steps.forEach((step, index) => {
           const button = document.createElement("button");
           button.type = "button";
           button.className = "step-button";
-          if (step.id === state.currentStep) button.classList.add("active");
+          if (step.id === state.currentStep) {
+            button.classList.add("active");
+            activeButton = button;
+          }
           if (index < currentIndex) button.classList.add("complete");
           button.innerHTML = `
             <span class="step-number">${index + 1}</span>
@@ -1145,6 +1168,14 @@
           `;
           button.addEventListener("click", () => goToStep(step.id));
           stepsEl.appendChild(button);
+        });
+
+        requestAnimationFrame(() => {
+          activeButton?.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "center",
+          });
         });
       };
 
