@@ -1,0 +1,1183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Public Form - Lift Report</title>
+    <style>
+      :root {
+        --bg: #f7f7f5;
+        --surface: #ffffff;
+        --surface-alt: #fafaf9;
+        --surface-active: #eeeeeb;
+        --text: #242424;
+        --muted: #686864;
+        --muted-strong: #4a4a46;
+        --line: #dcddd8;
+        --line-strong: #b8bab2;
+        --primary: #242424;
+        --primary-hover: #111111;
+        --danger: #b42318;
+        --danger-bg: #fff4f2;
+        --warning: #8a4b0f;
+        --warning-bg: #fff8e8;
+        --success: #237246;
+        --radius: 8px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+        font-size: 15px;
+        letter-spacing: 0;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .page {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 24px 0 40px;
+      }
+
+      .app-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .app-title {
+        margin: 0;
+        font-size: 24px;
+        line-height: 1.25;
+        font-weight: 700;
+      }
+
+      .app-context {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .button,
+      .button-secondary,
+      .button-danger,
+      .button-plain {
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: var(--radius);
+        padding: 0 14px;
+        font-weight: 600;
+        line-height: 1;
+      }
+
+      .button {
+        border: 1px solid var(--primary);
+        background: var(--primary);
+        color: #fff;
+      }
+
+      .button:hover {
+        background: var(--primary-hover);
+      }
+
+      .button-secondary {
+        border: 1px solid var(--line-strong);
+        background: var(--surface);
+        color: var(--text);
+      }
+
+      .button-secondary:hover {
+        background: var(--surface-alt);
+      }
+
+      .button-danger {
+        border: 1px solid var(--danger);
+        background: var(--danger);
+        color: #fff;
+      }
+
+      .button-plain {
+        border: 0;
+        background: transparent;
+        color: var(--muted-strong);
+      }
+
+      .button-plain:hover {
+        color: var(--text);
+      }
+
+      .form-frame {
+        display: grid;
+        grid-template-columns: 248px minmax(0, 1fr);
+        min-height: 620px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface);
+      }
+
+      .steps {
+        border-right: 1px solid var(--line);
+        background: var(--surface-alt);
+        padding: 12px;
+      }
+
+      .step-button {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 28px minmax(0, 1fr);
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        border: 0;
+        border-radius: 6px;
+        padding: 8px 10px;
+        background: transparent;
+        color: var(--muted);
+        text-align: left;
+      }
+
+      .step-button:hover {
+        background: #f1f1ef;
+        color: var(--text);
+      }
+
+      .step-button.active {
+        background: var(--surface-active);
+        color: var(--text);
+      }
+
+      .step-button.complete {
+        color: var(--muted-strong);
+      }
+
+      .step-number {
+        font-size: 13px;
+        font-variant-numeric: tabular-nums;
+        font-weight: 700;
+      }
+
+      .step-label {
+        min-width: 0;
+        overflow: hidden;
+        font-size: 14px;
+        font-weight: 600;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .form-area {
+        min-width: 0;
+      }
+
+      .form-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 52px;
+        padding: 0 24px;
+        border-bottom: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .form-status strong {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .form-status .danger-text {
+        color: var(--danger);
+        font-weight: 700;
+      }
+
+      .panel {
+        display: none;
+        padding: 24px;
+      }
+
+      .panel.active {
+        display: block;
+      }
+
+      .panel-header {
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .panel-title {
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.3;
+        font-weight: 700;
+      }
+
+      .panel-copy {
+        max-width: 640px;
+        margin: 6px 0 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .field {
+        min-width: 0;
+      }
+
+      .field.full {
+        grid-column: 1 / -1;
+      }
+
+      label,
+      .field-label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--muted-strong);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius);
+        background: #fff;
+        color: var(--text);
+        outline: 0;
+      }
+
+      input,
+      select {
+        padding: 0 10px;
+      }
+
+      textarea {
+        min-height: 104px;
+        padding: 10px;
+        resize: vertical;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(36, 36, 36, 0.08);
+      }
+
+      input[type="file"] {
+        padding: 8px 10px;
+      }
+
+      .help-text {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .section-note {
+        margin: 0 0 16px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface-alt);
+        color: var(--muted-strong);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .warning-note {
+        border-color: #ead8b5;
+        background: var(--warning-bg);
+        color: var(--warning);
+      }
+
+      .danger-note {
+        border-color: #f1b8b2;
+        background: var(--danger-bg);
+        color: var(--danger);
+      }
+
+      .radio-stack,
+      .option-stack {
+        display: grid;
+        gap: 10px;
+      }
+
+      .radio-row {
+        display: grid;
+        grid-template-columns: 22px minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+      }
+
+      .radio-row:has(input:checked) {
+        border-color: var(--primary);
+        background: #f4f4f2;
+      }
+
+      .radio-row input {
+        width: 16px;
+        height: 16px;
+        min-height: 16px;
+        margin: 2px 0 0;
+      }
+
+      .radio-title {
+        display: block;
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .radio-copy {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .phone-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+      }
+
+      .asset-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .asset-option {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: start;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 12px;
+        background: #fff;
+        color: var(--text);
+        text-align: left;
+      }
+
+      .asset-option:hover {
+        background: var(--surface-alt);
+      }
+
+      .asset-option.selected {
+        border-color: var(--primary);
+        background: #f4f4f2;
+      }
+
+      .asset-title {
+        display: block;
+        font-weight: 700;
+      }
+
+      .asset-meta {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .asset-flag {
+        color: var(--muted-strong);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .summary-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .summary-table th,
+      .summary-table td {
+        padding: 12px 0;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .summary-table th {
+        width: 180px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .summary-table td {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .confirm-row {
+        display: grid;
+        grid-template-columns: 20px minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+        margin-top: 16px;
+        color: var(--muted-strong);
+        line-height: 1.45;
+      }
+
+      .confirm-row input {
+        width: 16px;
+        height: 16px;
+        min-height: 16px;
+        margin-top: 2px;
+      }
+
+      .form-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 24px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .result {
+        display: none;
+        padding: 24px;
+      }
+
+      .result.show {
+        display: block;
+      }
+
+      .reference {
+        margin: 20px 0;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface-alt);
+      }
+
+      .reference-label {
+        margin-bottom: 4px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .reference-value {
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 0;
+        margin: 8px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .timeline li {
+        display: grid;
+        grid-template-columns: 130px minmax(0, 1fr);
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .timeline-state {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .timeline-title {
+        font-weight: 700;
+      }
+
+      .timeline-copy {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 820px) {
+        .page {
+          width: 100%;
+          padding: 12px;
+        }
+
+        .app-header {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .top-actions {
+          justify-content: flex-start;
+        }
+
+        .form-frame {
+          display: block;
+        }
+
+        .steps {
+          display: flex;
+          gap: 4px;
+          overflow-x: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+          padding: 8px;
+        }
+
+        .step-button {
+          width: auto;
+          min-width: max-content;
+          grid-template-columns: 22px max-content;
+          min-height: 38px;
+        }
+
+        .form-status {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 12px 16px;
+        }
+
+        .panel,
+        .result {
+          padding: 16px;
+        }
+
+        .form-grid,
+        .phone-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .asset-option {
+          grid-template-columns: 1fr;
+        }
+
+        .summary-table th,
+        .summary-table td {
+          display: block;
+          width: auto;
+          padding: 8px 0;
+        }
+
+        .summary-table th {
+          border-bottom: 0;
+          padding-bottom: 2px;
+        }
+
+        .summary-table td {
+          padding-top: 0;
+        }
+
+        .timeline li {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+
+        .form-actions {
+          align-items: stretch;
+          flex-direction: column-reverse;
+        }
+
+        .form-actions .button,
+        .form-actions .button-secondary,
+        .form-actions .button-danger {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="app-header">
+        <div>
+          <h1 class="app-title">Public Form</h1>
+          <p class="app-context">Menara Sentral, Lobby B. QR code has loaded the related customer and lift assets.</p>
+        </div>
+        <div class="top-actions">
+          <button class="button-secondary" type="button">Track report</button>
+          <button class="button-secondary" type="button">BM</button>
+        </div>
+      </header>
+
+      <section class="form-frame" id="formFrame">
+        <nav class="steps" id="steps" aria-label="Form steps"></nav>
+
+        <div class="form-area">
+          <div class="form-status" id="formStatus">
+            <div><strong id="stepCounter">Step 1 of 7</strong></div>
+            <div id="modeText">Normal public report</div>
+          </div>
+
+          <form id="reportForm">
+            <section class="panel active" data-panel="situation">
+              <div class="panel-header">
+                <h2 class="panel-title">What is happening now?</h2>
+                <p class="panel-copy">Start here so urgent lift trap cases can be handled immediately.</p>
+              </div>
+
+              <div class="field full">
+                <div class="field-label">Is anyone trapped in the lift?</div>
+                <div class="radio-stack">
+                  <label class="radio-row">
+                    <input type="radio" name="trap" value="yes" />
+                    <span>
+                      <span class="radio-title">Yes, someone is trapped</span>
+                      <span class="radio-copy">Submit as an emergency mantrap report.</span>
+                    </span>
+                  </label>
+                  <label class="radio-row">
+                    <input type="radio" name="trap" value="no" checked />
+                    <span>
+                      <span class="radio-title">Other report</span>
+                      <span class="radio-copy">Continue with breakdown, complaint, feedback, issue, or warranty.</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel" data-panel="category">
+              <div class="panel-header">
+                <h2 class="panel-title">Category</h2>
+                <p class="panel-copy">Select the report category.</p>
+              </div>
+
+              <div class="field full">
+                <label for="categorySelect">Report category</label>
+                <select id="categorySelect">
+                  <option>Mantrap</option>
+                  <option selected>Breakdown</option>
+                  <option>Complaint</option>
+                  <option>Feedback</option>
+                  <option>Report Issue</option>
+                  <option>Warranty</option>
+                </select>
+                <p class="help-text">Mantrap will be selected automatically if someone is trapped.</p>
+              </div>
+
+              <p class="section-note danger-note hidden" id="categoryLockNote">Category is locked to Mantrap because the report says someone is trapped.</p>
+            </section>
+
+            <section class="panel" data-panel="contact">
+              <div class="panel-header">
+                <h2 class="panel-title">Contact</h2>
+                <p class="panel-copy">Provide a phone number so the call center can follow up.</p>
+              </div>
+
+              <div class="form-grid">
+                <div class="field full">
+                  <label for="phone">Phone number</label>
+                  <div class="phone-grid">
+                    <input id="phone" name="phone" inputmode="tel" value="+60 12-345 6789" />
+                    <button class="button-secondary" type="button" id="verifyBtn">Verify</button>
+                  </div>
+                  <p class="help-text" id="verifyText">Emergency reports can still be submitted if OTP is delayed.</p>
+                </div>
+                <div class="field">
+                  <label for="reporterName">Reporter name</label>
+                  <input id="reporterName" value="Aiman Rahman" />
+                </div>
+                <div class="field">
+                  <label for="contactMethod">Preferred contact method</label>
+                  <select id="contactMethod">
+                    <option>Phone call</option>
+                    <option>WhatsApp</option>
+                    <option>SMS</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel" data-panel="location">
+              <div class="panel-header">
+                <h2 class="panel-title">Location</h2>
+                <p class="panel-copy">Confirm the site and area related to this report.</p>
+              </div>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="site">Site name</label>
+                  <select id="site">
+                    <option>Menara Sentral</option>
+                    <option>SkyRise Tower</option>
+                    <option>Northpoint Residence</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="locationArea">Area</label>
+                  <select id="locationArea">
+                    <option>Lobby B</option>
+                    <option>Inside lift</option>
+                    <option>Car park</option>
+                    <option>Floor area</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="floor">Floor</label>
+                  <input id="floor" value="Ground floor" />
+                </div>
+                <div class="field">
+                  <label for="siteNotes">Location note</label>
+                  <input id="siteNotes" value="Near reception counter" />
+                </div>
+              </div>
+            </section>
+
+            <section class="panel" data-panel="asset">
+              <div class="panel-header">
+                <h2 class="panel-title">Asset</h2>
+                <p class="panel-copy">Select the lift, or choose unknown if you are not sure.</p>
+              </div>
+
+              <div class="asset-list" id="assetList">
+                <button class="asset-option selected" type="button" data-asset="Lift L2 - Lobby B">
+                  <span>
+                    <span class="asset-title">Lift L2</span>
+                    <span class="asset-meta">Lobby B, passenger lift. Asset ID: ELV-2026-014</span>
+                  </span>
+                  <span class="asset-flag">QR match</span>
+                </button>
+                <button class="asset-option" type="button" data-asset="Lift L3 - Lobby B">
+                  <span>
+                    <span class="asset-title">Lift L3</span>
+                    <span class="asset-meta">Lobby B, passenger lift. Asset ID: ELV-2026-015</span>
+                  </span>
+                  <span class="asset-flag">Nearby</span>
+                </button>
+                <button class="asset-option" type="button" data-asset="Service Lift S1">
+                  <span>
+                    <span class="asset-title">Service Lift S1</span>
+                    <span class="asset-meta">Back corridor. Asset ID: ELV-2026-021</span>
+                  </span>
+                </button>
+                <button class="asset-option" type="button" data-asset="Unknown lift - requires mapping">
+                  <span>
+                    <span class="asset-title">Unknown lift</span>
+                    <span class="asset-meta">Use when the user only knows the site or lobby.</span>
+                  </span>
+                  <span class="asset-flag">Flag</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="panel" data-panel="trapped">
+              <div class="panel-header">
+                <h2 class="panel-title">Trapped Person</h2>
+                <p class="panel-copy">Add the information needed for emergency response.</p>
+              </div>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="trappedPhone">Trapped person phone number</label>
+                  <input id="trappedPhone" inputmode="tel" placeholder="+60" />
+                </div>
+                <div class="field">
+                  <label for="peopleCount">Number of people trapped</label>
+                  <select id="peopleCount">
+                    <option>1 person</option>
+                    <option>2 people</option>
+                    <option>3 people</option>
+                    <option>4 or more people</option>
+                    <option>Not sure</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="insideStatus">Where is the trapped person?</label>
+                  <select id="insideStatus">
+                    <option>Inside selected lift</option>
+                    <option>Near selected lift</option>
+                    <option>Caller reported it</option>
+                    <option>Not sure</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="medical">Medical condition</label>
+                  <select id="medical">
+                    <option>No / not sure</option>
+                    <option>Yes, urgent attention needed</option>
+                    <option>Child or elderly person involved</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel" data-panel="incident">
+              <div class="panel-header">
+                <h2 class="panel-title">Incident</h2>
+                <p class="panel-copy">Add the incident details and any supporting attachment.</p>
+              </div>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="timeSeen">When did it happen?</label>
+                  <select id="timeSeen">
+                    <option>Just now</option>
+                    <option>Within 15 minutes</option>
+                    <option>Within 1 hour</option>
+                    <option>Earlier today</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="attachment">Photo or video</label>
+                  <input id="attachment" type="file" />
+                </div>
+                <div class="field full">
+                  <label for="description">Description</label>
+                  <textarea id="description">Passenger says the lift stopped between floors. Door is closed and alarm bell was heard.</textarea>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel" data-panel="review">
+              <div class="panel-header">
+                <h2 class="panel-title">Review</h2>
+                <p class="panel-copy">Check the information before submitting.</p>
+              </div>
+
+              <table class="summary-table">
+                <tbody>
+                  <tr>
+                    <th>Category</th>
+                    <td id="summaryCategory">Breakdown</td>
+                  </tr>
+                  <tr>
+                    <th>Priority</th>
+                    <td id="summaryPriority">Normal response</td>
+                  </tr>
+                  <tr>
+                    <th>Site</th>
+                    <td id="summarySite">Menara Sentral</td>
+                  </tr>
+                  <tr>
+                    <th>Area</th>
+                    <td id="summaryArea">Lobby B</td>
+                  </tr>
+                  <tr>
+                    <th>Asset</th>
+                    <td id="summaryAsset">Lift L2 - Lobby B</td>
+                  </tr>
+                  <tr>
+                    <th>Contact</th>
+                    <td id="summaryPhone">+60 12-345 6789</td>
+                  </tr>
+                  <tr>
+                    <th>Reporter</th>
+                    <td id="summaryReporter">Aiman Rahman</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p class="section-note warning-note hidden" id="prankWarning">False mantrap reports may delay emergency response and may be investigated. Submit only when this is a real emergency or you genuinely believe someone is trapped.</p>
+
+              <label class="confirm-row">
+                <input id="truthCheck" type="checkbox" />
+                <span>I confirm the information is correct and may be used by the call center to follow up.</span>
+              </label>
+            </section>
+
+            <div class="form-actions" id="formActions">
+              <button class="button-secondary" type="button" id="backBtn">Back</button>
+              <button class="button" type="button" id="nextBtn">Continue</button>
+            </div>
+          </form>
+
+          <section class="result" id="submitResult">
+            <div class="panel-header">
+              <h2 class="panel-title" id="resultTitle">Report submitted</h2>
+              <p class="panel-copy">A tracking link has been sent to the provided phone number.</p>
+            </div>
+
+            <div class="reference">
+              <div class="reference-label">Reference number</div>
+              <div class="reference-value">PF-2026-0518</div>
+            </div>
+
+            <ul class="timeline">
+              <li>
+                <div class="timeline-state">Done</div>
+                <div>
+                  <div class="timeline-title">Submitted</div>
+                  <div class="timeline-copy">Public Form created the job.</div>
+                </div>
+              </li>
+              <li>
+                <div class="timeline-state">Current</div>
+                <div>
+                  <div class="timeline-title">Call center review</div>
+                  <div class="timeline-copy">Phone verification and dispatch are in progress.</div>
+                </div>
+              </li>
+              <li>
+                <div class="timeline-state">Next</div>
+                <div>
+                  <div class="timeline-title">Technician assigned</div>
+                  <div class="timeline-copy">The selected asset receives the L2L checklist.</div>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const state = {
+        category: "Breakdown",
+        isTrap: false,
+        currentStep: "situation",
+        asset: "Lift L2 - Lobby B",
+      };
+
+      const baseSteps = [
+        { id: "situation", label: "Situation" },
+        { id: "category", label: "Category" },
+        { id: "contact", label: "Contact" },
+        { id: "location", label: "Location" },
+        { id: "asset", label: "Asset" },
+        { id: "incident", label: "Incident" },
+        { id: "review", label: "Review" },
+      ];
+
+      const trapStep = { id: "trapped", label: "Trapped Person" };
+
+      const stepsEl = document.getElementById("steps");
+      const panels = [...document.querySelectorAll("[data-panel]")];
+      const categorySelect = document.getElementById("categorySelect");
+      const assetOptions = [...document.querySelectorAll("[data-asset]")];
+      const trapRadios = [...document.querySelectorAll('input[name="trap"]')];
+      const backBtn = document.getElementById("backBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      const getSteps = () => {
+        if (!state.isTrap) return baseSteps;
+        return [
+          ...baseSteps.slice(0, 5),
+          trapStep,
+          ...baseSteps.slice(5),
+        ];
+      };
+
+      const getCurrentIndex = () => {
+        const steps = getSteps();
+        const index = steps.findIndex((step) => step.id === state.currentStep);
+        return index === -1 ? 0 : index;
+      };
+
+      const goToStep = (stepId) => {
+        const steps = getSteps();
+        state.currentStep = steps.some((step) => step.id === stepId) ? stepId : steps[0].id;
+        render();
+      };
+
+      const setTrapMode = (isTrap) => {
+        const currentStepBeforeChange = state.currentStep;
+        state.isTrap = isTrap;
+        state.category = isTrap ? "Mantrap" : "Breakdown";
+        if (!isTrap && currentStepBeforeChange === "trapped") {
+          state.currentStep = "incident";
+        }
+        render();
+      };
+
+      const syncSummary = () => {
+        document.getElementById("summaryCategory").textContent = state.category;
+        document.getElementById("summaryPriority").textContent = state.isTrap
+          ? "Emergency response"
+          : "Normal response";
+        document.getElementById("summarySite").textContent = document.getElementById("site").value;
+        document.getElementById("summaryArea").textContent = document.getElementById("locationArea").value;
+        document.getElementById("summaryAsset").textContent = state.asset;
+        document.getElementById("summaryPhone").textContent = document.getElementById("phone").value;
+        document.getElementById("summaryReporter").textContent =
+          document.getElementById("reporterName").value || "Not provided";
+      };
+
+      const renderSteps = () => {
+        const steps = getSteps();
+        const currentIndex = getCurrentIndex();
+        stepsEl.innerHTML = "";
+
+        steps.forEach((step, index) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "step-button";
+          if (step.id === state.currentStep) button.classList.add("active");
+          if (index < currentIndex) button.classList.add("complete");
+          button.innerHTML = `
+            <span class="step-number">${index + 1}</span>
+            <span class="step-label">${step.label}</span>
+          `;
+          button.addEventListener("click", () => goToStep(step.id));
+          stepsEl.appendChild(button);
+        });
+
+        document.getElementById("stepCounter").textContent = `Step ${currentIndex + 1} of ${steps.length}`;
+      };
+
+      const renderPanels = () => {
+        panels.forEach((panel) => {
+          panel.classList.toggle("active", panel.dataset.panel === state.currentStep);
+        });
+      };
+
+      const renderCategory = () => {
+        trapRadios.forEach((radio) => {
+          radio.checked = radio.value === (state.isTrap ? "yes" : "no");
+        });
+
+        categorySelect.value = state.category;
+        categorySelect.disabled = state.isTrap;
+
+        document.getElementById("categoryLockNote").classList.toggle("hidden", !state.isTrap);
+        document.getElementById("prankWarning").classList.toggle("hidden", !state.isTrap);
+        document.getElementById("modeText").innerHTML = state.isTrap
+          ? '<span class="danger-text">Mantrap emergency report</span>'
+          : "Normal public report";
+      };
+
+      const renderAssets = () => {
+        assetOptions.forEach((option) => {
+          option.classList.toggle("selected", option.dataset.asset === state.asset);
+        });
+      };
+
+      const renderActions = () => {
+        const steps = getSteps();
+        const currentIndex = getCurrentIndex();
+        const isFirst = currentIndex === 0;
+        const isLast = currentIndex === steps.length - 1;
+
+        backBtn.disabled = isFirst;
+        backBtn.classList.toggle("hidden", isFirst);
+        nextBtn.textContent = isLast
+          ? state.isTrap
+            ? "Submit emergency report"
+            : "Submit report"
+          : "Continue";
+        nextBtn.className = isLast && state.isTrap ? "button-danger" : "button";
+      };
+
+      const render = () => {
+        renderSteps();
+        renderPanels();
+        renderCategory();
+        renderAssets();
+        renderActions();
+        syncSummary();
+      };
+
+      trapRadios.forEach((radio) => {
+        radio.addEventListener("change", () => setTrapMode(radio.value === "yes"));
+      });
+
+      categorySelect.addEventListener("change", () => {
+        state.category = categorySelect.value;
+        state.isTrap = state.category === "Mantrap";
+        render();
+      });
+
+      assetOptions.forEach((option) => {
+        option.addEventListener("click", () => {
+          state.asset = option.dataset.asset;
+          render();
+        });
+      });
+
+      backBtn.addEventListener("click", () => {
+        const steps = getSteps();
+        const currentIndex = getCurrentIndex();
+        if (currentIndex > 0) {
+          state.currentStep = steps[currentIndex - 1].id;
+          render();
+        }
+      });
+
+      nextBtn.addEventListener("click", () => {
+        const steps = getSteps();
+        const currentIndex = getCurrentIndex();
+
+        if (currentIndex === steps.length - 1) {
+          document.getElementById("reportForm").classList.add("hidden");
+          document.getElementById("formStatus").classList.add("hidden");
+          stepsEl.classList.add("hidden");
+          document.getElementById("submitResult").classList.add("show");
+          document.getElementById("resultTitle").textContent = state.isTrap
+            ? "Emergency report submitted"
+            : "Report submitted";
+          return;
+        }
+
+        state.currentStep = steps[currentIndex + 1].id;
+        render();
+      });
+
+      document.getElementById("verifyBtn").addEventListener("click", () => {
+        document.getElementById("verifyText").textContent = "Phone verified. Status updates will be sent to this number.";
+      });
+
+      ["phone", "reporterName", "site", "locationArea"].forEach((id) => {
+        const element = document.getElementById(id);
+        element.addEventListener("input", syncSummary);
+        element.addEventListener("change", syncSummary);
+      });
+
+      render();
+    </script>
+  </body>
+</html>
