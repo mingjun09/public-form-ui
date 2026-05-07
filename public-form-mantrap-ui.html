@@ -432,10 +432,7 @@
 
       .asset-option {
         width: 100%;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 12px;
-        align-items: start;
+        display: block;
         border: 1px solid var(--line);
         border-radius: var(--radius);
         padding: 12px;
@@ -464,12 +461,6 @@
         color: var(--muted);
         font-size: 13px;
         line-height: 1.4;
-      }
-
-      .asset-flag {
-        color: var(--muted-strong);
-        font-size: 13px;
-        font-weight: 600;
       }
 
       .empty-assets {
@@ -657,10 +648,6 @@
 
         .form-grid,
         .phone-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .asset-option {
           grid-template-columns: 1fr;
         }
 
@@ -873,31 +860,20 @@
 
               <div class="asset-list" id="assetList">
                 <button class="asset-option selected" type="button" data-asset="Lift L2 - Lobby B">
-                  <span>
-                    <span class="asset-title">Lift L2</span>
-                    <span class="asset-meta">Lobby B, passenger lift. Asset ID: ELV-2026-014</span>
-                  </span>
-                  <span class="asset-flag">QR match</span>
+                  <span class="asset-title">Lift L2</span>
+                  <span class="asset-meta">Lobby B, passenger lift</span>
                 </button>
                 <button class="asset-option" type="button" data-asset="Lift L3 - Lobby B">
-                  <span>
-                    <span class="asset-title">Lift L3</span>
-                    <span class="asset-meta">Lobby B, passenger lift. Asset ID: ELV-2026-015</span>
-                  </span>
-                  <span class="asset-flag">Nearby</span>
+                  <span class="asset-title">Lift L3</span>
+                  <span class="asset-meta">Lobby B, passenger lift</span>
                 </button>
                 <button class="asset-option" type="button" data-asset="Service Lift S1">
-                  <span>
-                    <span class="asset-title">Service Lift S1</span>
-                    <span class="asset-meta">Back corridor. Asset ID: ELV-2026-021</span>
-                  </span>
+                  <span class="asset-title">Service Lift S1</span>
+                  <span class="asset-meta">Back corridor</span>
                 </button>
                 <button class="asset-option" type="button" data-asset="Unknown lift - requires mapping" data-fallback="true">
-                  <span>
-                    <span class="asset-title">Unknown lift</span>
-                    <span class="asset-meta">Use when the user only knows the site or lobby.</span>
-                  </span>
-                  <span class="asset-flag">Flag</span>
+                  <span class="asset-title">Unknown lift</span>
+                  <span class="asset-meta">Use when you only know the site or lobby</span>
                 </button>
               </div>
               <div class="empty-assets" id="emptyAssets">No exact lift match. Use Unknown lift or adjust your search.</div>
