@@ -184,10 +184,6 @@
         color: var(--text);
       }
 
-      .step-button.complete {
-        color: var(--muted-strong);
-      }
-
       .step-number {
         width: 24px;
         height: 24px;
@@ -213,6 +209,11 @@
         font-weight: 600;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+
+      .mobile-step-control,
+      .step-switcher {
+        display: none;
       }
 
       .form-area {
@@ -459,21 +460,107 @@
         gap: 8px;
       }
 
+      .asset-summary {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 16px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--surface-alt);
+      }
+
+      .asset-summary-label {
+        margin-bottom: 4px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .asset-summary-title {
+        font-weight: 700;
+      }
+
+      .asset-summary-meta {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .asset-picker {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 240px;
+        gap: 16px;
+      }
+
+      .asset-picker-header,
+      .asset-picker-footer {
+        display: none;
+      }
+
+      .asset-picker-main {
+        min-width: 0;
+      }
+
       .asset-search {
+        margin-bottom: 10px;
+      }
+
+      .asset-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
         margin-bottom: 12px;
       }
 
+      .asset-filter {
+        min-height: 32px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 0 10px;
+        background: var(--surface);
+        color: var(--muted-strong);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .asset-filter:hover {
+        background: var(--surface-alt);
+      }
+
+      .asset-filter.active {
+        border-color: var(--primary);
+        background: var(--primary);
+        color: #fff;
+      }
+
+      .asset-count {
+        margin: 0 0 8px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
       .asset-list {
+        max-height: 300px;
         display: grid;
-        gap: 10px;
+        gap: 6px;
+        overflow: auto;
+        padding-right: 2px;
       }
 
       .asset-option {
         width: 100%;
-        display: block;
+        display: grid;
+        grid-template-columns: 18px minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
         border: 1px solid var(--line);
         border-radius: var(--radius);
-        padding: 12px;
+        padding: 10px;
         background: #fff;
         color: var(--text);
         text-align: left;
@@ -488,6 +575,18 @@
         background: #f4f4f2;
       }
 
+      .asset-option .asset-radio {
+        width: 16px;
+        height: 16px;
+        margin-top: 2px;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+      }
+
+      .asset-option.selected .asset-radio {
+        border: 5px solid var(--primary);
+      }
+
       .asset-title {
         display: block;
         font-weight: 700;
@@ -495,10 +594,67 @@
 
       .asset-meta {
         display: block;
-        margin-top: 4px;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .asset-id {
+        color: var(--muted-strong);
+        font-weight: 600;
+      }
+
+      .asset-fallback {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid var(--line);
+      }
+
+      .asset-detail {
+        align-self: start;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 14px;
+        background: var(--surface-alt);
+      }
+
+      .asset-detail-title {
+        margin: 0 0 4px;
+        font-size: 16px;
+        line-height: 1.35;
+        font-weight: 700;
+      }
+
+      .asset-detail-meta {
+        margin: 0 0 12px;
         color: var(--muted);
         font-size: 13px;
         line-height: 1.4;
+      }
+
+      .asset-detail-list {
+        display: grid;
+        gap: 8px;
+        margin: 0;
+      }
+
+      .asset-detail-list div {
+        display: grid;
+        grid-template-columns: minmax(72px, auto) minmax(0, 1fr);
+        gap: 10px;
+      }
+
+      .asset-detail-list dt {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .asset-detail-list dd {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 700;
       }
 
       .empty-assets {
@@ -673,32 +829,186 @@
         }
 
         .steps {
-          display: flex;
-          gap: 4px;
-          overflow-x: auto;
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
-          padding: 8px;
+          display: none;
         }
 
-        .step-button {
-          width: auto;
-          min-width: max-content;
-          grid-template-columns: 22px max-content;
-          min-height: 38px;
+        .mobile-step-control {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 10px;
+          align-items: center;
+          margin: 12px 12px 0;
+          padding: 9px 10px;
           border: 1px solid var(--line);
-          border-radius: 6px;
-          padding: 7px 10px;
+          border-radius: var(--radius);
+          background: var(--surface-active);
         }
 
-        .step-button.active {
-          box-shadow: none;
+        .mobile-step-current {
+          min-width: 0;
+          display: grid;
+          grid-template-columns: 24px minmax(0, 1fr);
+          gap: 9px;
+          align-items: center;
+        }
+
+        .mobile-step-number {
+          width: 24px;
+          height: 24px;
+          display: grid;
+          place-items: center;
+          border-radius: 999px;
+          background: var(--primary);
+          color: #fff;
+          font-size: 12px;
+          font-weight: 700;
+        }
+
+        .mobile-step-label {
+          display: block;
+          overflow: hidden;
+          color: var(--text);
+          font-size: 13px;
+          font-weight: 700;
+          line-height: 1.2;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .mobile-step-position {
+          display: block;
+          margin-top: 1px;
+          color: var(--muted);
+          font-size: 10px;
+          font-weight: 700;
+          line-height: 1.2;
+        }
+
+        .mobile-step-switch {
+          min-height: 30px;
+          border: 1px solid var(--line-strong);
+          border-radius: var(--radius);
+          padding: 0 10px;
+          background: var(--surface);
+          color: var(--muted-strong);
+          font-size: 11px;
+          font-weight: 700;
+        }
+
+        .step-switcher.open {
+          position: fixed;
+          inset: 0;
+          z-index: 30;
+          display: flex;
+          align-items: flex-end;
+          background: rgba(36, 36, 36, 0.36);
+        }
+
+        body.step-switcher-open {
+          overflow: hidden;
+        }
+
+        .step-switcher-sheet {
+          width: 100%;
+          max-height: min(520px, calc(100svh - 40px));
+          display: grid;
+          gap: 14px;
+          padding: 12px 16px calc(16px + env(safe-area-inset-bottom));
+          border-top: 1px solid var(--line);
+          border-radius: 16px 16px 0 0;
+          background: var(--surface);
+        }
+
+        .step-switcher-handle {
+          width: 42px;
+          height: 5px;
+          justify-self: center;
+          border-radius: 999px;
+          background: var(--line-strong);
+        }
+
+        .step-switcher-head {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 12px;
+          align-items: start;
+        }
+
+        .step-switcher-title {
+          font-size: 18px;
+          line-height: 1.3;
+          font-weight: 700;
+        }
+
+        .step-switcher-copy {
+          margin-top: 2px;
+          color: var(--muted);
+          font-size: 12px;
+          line-height: 1.4;
+        }
+
+        .step-switcher-list {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+
+        .switcher-step {
+          display: grid;
+          grid-template-columns: 22px minmax(0, 1fr);
+          gap: 8px;
+          align-items: center;
+          min-height: 48px;
+          border: 1px solid var(--line);
+          border-radius: var(--radius);
+          padding: 0 10px;
+          background: var(--surface);
+          color: var(--text);
+          text-align: left;
+        }
+
+        .switcher-step.active {
           border-color: var(--primary);
+          background: var(--primary);
+          color: #fff;
+        }
+
+        .switcher-step-number {
+          width: 22px;
+          height: 22px;
+          display: grid;
+          place-items: center;
+          border-radius: 999px;
+          background: var(--surface-active);
+          color: var(--muted-strong);
+          font-size: 11px;
+          font-weight: 700;
+        }
+
+        .switcher-step.active .switcher-step-number {
+          background: #fff;
+          color: var(--primary);
+        }
+
+        .switcher-step-label {
+          overflow: hidden;
+          font-size: 13px;
+          font-weight: 700;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .step-switcher-note {
+          margin: 0;
+          color: var(--muted);
+          font-size: 11px;
+          line-height: 1.35;
+          text-align: center;
         }
 
         #reportForm {
-          min-height: calc(100vh - 88px);
-          min-height: calc(100svh - 88px);
+          min-height: calc(100vh - 154px);
+          min-height: calc(100svh - 154px);
         }
 
         .panel,
@@ -730,6 +1040,87 @@
         .context-details {
           grid-template-columns: minmax(120px, 0.48fr) auto minmax(0, 1fr);
           gap: 6px 6px;
+        }
+
+        .asset-summary {
+          margin-bottom: 12px;
+        }
+
+        .asset-picker {
+          position: fixed;
+          inset: 0;
+          z-index: 20;
+          display: none;
+          grid-template-columns: 1fr;
+          grid-template-rows: auto minmax(0, 1fr) auto;
+          gap: 0;
+          padding: 0;
+          background: var(--surface);
+        }
+
+        .asset-picker.open {
+          display: grid;
+        }
+
+        body.asset-picker-open {
+          overflow: hidden;
+        }
+
+        .asset-picker-header,
+        .asset-picker-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          padding: 12px 16px;
+          border-bottom: 1px solid var(--line);
+          background: var(--surface);
+        }
+
+        .asset-picker-footer {
+          border-top: 1px solid var(--line);
+          border-bottom: 0;
+          padding-bottom: calc(12px + env(safe-area-inset-bottom));
+        }
+
+        .asset-picker-title {
+          font-size: 17px;
+          font-weight: 700;
+        }
+
+        .asset-picker-main {
+          min-height: 0;
+          overflow: auto;
+          padding: 14px 16px 16px;
+        }
+
+        .asset-picker .asset-search {
+          position: sticky;
+          top: 0;
+          z-index: 1;
+          margin: -14px -16px 10px;
+          padding: 14px 16px 10px;
+          background: var(--surface);
+        }
+
+        .asset-filters {
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          padding-bottom: 2px;
+        }
+
+        .asset-filter {
+          flex: 0 0 auto;
+        }
+
+        .asset-list {
+          max-height: none;
+          overflow: visible;
+          padding-right: 0;
+        }
+
+        .asset-detail {
+          display: none;
         }
 
         .timeline li {
@@ -766,6 +1157,35 @@
 
       <section class="form-frame" id="formFrame">
         <nav class="steps" id="steps" aria-label="Form steps"></nav>
+        <div class="mobile-step-control" id="mobileStepControl">
+          <div class="mobile-step-current">
+            <span class="mobile-step-number" id="mobileStepNumber">1</span>
+            <span>
+              <span class="mobile-step-label" id="mobileStepLabel">Category</span>
+              <span class="mobile-step-position" id="mobileStepPosition">Step 1 of 5</span>
+            </span>
+          </div>
+          <button class="mobile-step-switch" type="button" id="openStepSwitcherBtn">
+            Switch
+          </button>
+        </div>
+
+        <section class="step-switcher" id="stepSwitcher" aria-label="Switch step">
+          <div class="step-switcher-sheet" role="dialog" aria-modal="true" aria-labelledby="stepSwitcherTitle">
+            <div class="step-switcher-handle" aria-hidden="true"></div>
+            <div class="step-switcher-head">
+              <div>
+                <div class="step-switcher-title" id="stepSwitcherTitle">Switch step</div>
+                <div class="step-switcher-copy">Jump back without losing your entered details.</div>
+              </div>
+              <button class="button-plain" type="button" id="closeStepSwitcherBtn">Close</button>
+            </div>
+            <div class="step-switcher-list" id="stepSwitcherList"></div>
+            <p class="step-switcher-note">
+              You can reopen earlier steps; later steps may depend on required fields.
+            </p>
+          </div>
+        </section>
 
         <div class="form-area">
           <form id="reportForm">
@@ -872,30 +1292,60 @@
                 </section>
               </div>
 
-              <div class="field asset-search">
-                <label for="assetSearch">Search lift</label>
-                <input id="assetSearch" type="search" placeholder="Search by lift name, area, or asset ID" />
-              </div>
+              <section class="asset-summary" aria-live="polite">
+                <div>
+                  <div class="asset-summary-label">Selected lift</div>
+                  <div class="asset-summary-title" id="selectedAssetTitle">Lift L2</div>
+                  <div class="asset-summary-meta" id="selectedAssetMeta">Lobby B, passenger lift</div>
+                </div>
+                <button class="button-secondary" type="button" id="openAssetPickerBtn">
+                  Change lift
+                </button>
+              </section>
 
-              <div class="asset-list" id="assetList">
-                <button class="asset-option selected" type="button" data-asset="Lift L2 - Lobby B">
-                  <span class="asset-title">Lift L2</span>
-                  <span class="asset-meta">Lobby B, passenger lift</span>
-                </button>
-                <button class="asset-option" type="button" data-asset="Lift L3 - Lobby B">
-                  <span class="asset-title">Lift L3</span>
-                  <span class="asset-meta">Lobby B, passenger lift</span>
-                </button>
-                <button class="asset-option" type="button" data-asset="Service Lift S1">
-                  <span class="asset-title">Service Lift S1</span>
-                  <span class="asset-meta">Back corridor</span>
-                </button>
-                <button class="asset-option" type="button" data-asset="Unknown lift - requires mapping" data-fallback="true">
-                  <span class="asset-title">Unknown lift</span>
-                  <span class="asset-meta">Use when you only know the site or lobby</span>
-                </button>
-              </div>
-              <div class="empty-assets" id="emptyAssets">No exact lift match. Use Unknown lift or adjust your search.</div>
+              <section class="asset-picker" id="assetPicker" aria-label="Lift picker">
+                <div class="asset-picker-header">
+                  <div class="asset-picker-title">Choose lift</div>
+                  <button class="button-plain" type="button" id="closeAssetPickerBtn">Close</button>
+                </div>
+
+                <div class="asset-picker-main">
+                  <div class="field asset-search">
+                    <label for="assetSearch">Search lift</label>
+                    <input id="assetSearch" type="search" placeholder="Search by lift name, area, or asset ID" />
+                  </div>
+
+                  <div class="asset-filters" id="assetFilters" aria-label="Lift filters"></div>
+                  <p class="asset-count" id="assetCount"></p>
+                  <div class="asset-list" id="assetList"></div>
+                  <div class="asset-fallback" id="assetFallback"></div>
+                  <div class="empty-assets" id="emptyAssets">No exact lift match. Use Unknown lift or adjust your search.</div>
+                </div>
+
+                <aside class="asset-detail" aria-label="Selected lift details">
+                  <h3 class="asset-detail-title" id="assetDetailTitle">Lift L2</h3>
+                  <p class="asset-detail-meta" id="assetDetailMeta">Lobby B, passenger lift</p>
+                  <dl class="asset-detail-list">
+                    <div>
+                      <dt>Asset ID</dt>
+                      <dd id="assetDetailId">LFT-002</dd>
+                    </div>
+                    <div>
+                      <dt>Area</dt>
+                      <dd id="assetDetailArea">Lobby B</dd>
+                    </div>
+                    <div>
+                      <dt>Type</dt>
+                      <dd id="assetDetailType">Passenger</dd>
+                    </div>
+                  </dl>
+                </aside>
+
+                <div class="asset-picker-footer">
+                  <button class="button-secondary" type="button" id="cancelAssetPickerBtn">Cancel</button>
+                  <button class="button" type="button" id="confirmAssetPickerBtn">Use selected lift</button>
+                </div>
+              </section>
             </section>
 
             <section class="panel" data-panel="details">
@@ -1066,7 +1516,8 @@
       const state = {
         category: "Breakdown",
         currentStep: "category",
-        asset: "Lift L2 - Lobby B",
+        asset: "lift-l2",
+        assetFilter: "all",
       };
 
       const baseSteps = [
@@ -1077,15 +1528,128 @@
         { id: "review", label: "Review" },
       ];
 
+      const assets = [
+        {
+          id: "lift-l2",
+          title: "Lift L2",
+          area: "Lobby B",
+          type: "Passenger",
+          assetId: "LFT-002",
+          meta: "Lobby B, passenger lift",
+          keywords: "lift l2 lobby b passenger lft-002",
+        },
+        {
+          id: "lift-l3",
+          title: "Lift L3",
+          area: "Lobby B",
+          type: "Passenger",
+          assetId: "LFT-003",
+          meta: "Lobby B, passenger lift",
+          keywords: "lift l3 lobby b passenger lft-003",
+        },
+        {
+          id: "lift-l4",
+          title: "Lift L4",
+          area: "Lobby A",
+          type: "Passenger",
+          assetId: "LFT-004",
+          meta: "Lobby A, passenger lift",
+          keywords: "lift l4 lobby a passenger lft-004",
+        },
+        {
+          id: "lift-l5",
+          title: "Lift L5",
+          area: "Tower 1",
+          type: "Passenger",
+          assetId: "LFT-005",
+          meta: "Tower 1, passenger lift",
+          keywords: "lift l5 tower 1 passenger lft-005",
+        },
+        {
+          id: "lift-l6",
+          title: "Lift L6",
+          area: "Tower 2",
+          type: "Passenger",
+          assetId: "LFT-006",
+          meta: "Tower 2, passenger lift",
+          keywords: "lift l6 tower 2 passenger lft-006",
+        },
+        {
+          id: "service-lift-s1",
+          title: "Service Lift S1",
+          area: "Back corridor",
+          type: "Service",
+          assetId: "LFT-S01",
+          meta: "Back corridor",
+          keywords: "service lift s1 back corridor lft-s01",
+        },
+        {
+          id: "service-lift-s2",
+          title: "Service Lift S2",
+          area: "Loading bay",
+          type: "Service",
+          assetId: "LFT-S02",
+          meta: "Loading bay",
+          keywords: "service lift s2 loading bay lft-s02",
+        },
+        {
+          id: "cargo-lift-c1",
+          title: "Cargo Lift C1",
+          area: "Basement",
+          type: "Cargo",
+          assetId: "LFT-C01",
+          meta: "Basement goods lift",
+          keywords: "cargo lift c1 basement goods lft-c01",
+        },
+        {
+          id: "unknown-lift",
+          title: "Unknown lift",
+          area: "Not sure",
+          type: "Fallback",
+          assetId: "-",
+          meta: "Use when you only know the site or lobby",
+          keywords: "unknown lift not sure site lobby fallback",
+          fallback: true,
+        },
+      ];
+
+      const assetFilters = [
+        { id: "all", label: "All" },
+        { id: "Passenger", label: "Passenger" },
+        { id: "Service", label: "Service" },
+        { id: "Lobby B", label: "Lobby B" },
+        { id: "Unknown", label: "Unknown" },
+      ];
+
       const stepsEl = document.getElementById("steps");
       const panels = [...document.querySelectorAll("[data-panel]")];
       const categoryRadios = [...document.querySelectorAll('input[name="category"]')];
-      const assetOptions = [...document.querySelectorAll("[data-asset]")];
       const backBtn = document.getElementById("backBtn");
       const nextBtn = document.getElementById("nextBtn");
       const assetSearch = document.getElementById("assetSearch");
+      const assetFiltersEl = document.getElementById("assetFilters");
+      const assetList = document.getElementById("assetList");
+      const assetFallback = document.getElementById("assetFallback");
+      const assetCount = document.getElementById("assetCount");
       const emptyAssets = document.getElementById("emptyAssets");
+      const assetPicker = document.getElementById("assetPicker");
+      const openAssetPickerBtn = document.getElementById("openAssetPickerBtn");
+      const closeAssetPickerBtn = document.getElementById("closeAssetPickerBtn");
+      const cancelAssetPickerBtn = document.getElementById("cancelAssetPickerBtn");
+      const confirmAssetPickerBtn = document.getElementById("confirmAssetPickerBtn");
+      const mobileStepControl = document.getElementById("mobileStepControl");
+      const mobileStepNumber = document.getElementById("mobileStepNumber");
+      const mobileStepLabel = document.getElementById("mobileStepLabel");
+      const mobileStepPosition = document.getElementById("mobileStepPosition");
+      const stepSwitcher = document.getElementById("stepSwitcher");
+      const stepSwitcherList = document.getElementById("stepSwitcherList");
+      const openStepSwitcherBtn = document.getElementById("openStepSwitcherBtn");
+      const closeStepSwitcherBtn = document.getElementById("closeStepSwitcherBtn");
       const reportTitle = document.getElementById("reportTitle");
+
+      const getSelectedAsset = () => {
+        return assets.find((asset) => asset.id === state.asset) || assets[0];
+      };
 
       const scrollToFormTop = () => {
         document.getElementById("formFrame").scrollIntoView({
@@ -1112,8 +1676,12 @@
       };
 
       const syncSummary = () => {
+        const selectedAsset = getSelectedAsset();
         document.getElementById("summaryCategory").textContent = state.category;
-        document.getElementById("summaryAsset").textContent = state.asset;
+        document.getElementById("summaryAsset").textContent =
+          selectedAsset.fallback
+            ? "Unknown lift - requires mapping"
+            : `${selectedAsset.title} - ${selectedAsset.area}`;
         document.getElementById("summaryName").textContent =
           document.getElementById("reporterName").value || "-";
         document.getElementById("summaryPhone").textContent =
@@ -1131,7 +1699,9 @@
       const renderSteps = () => {
         const steps = getSteps();
         const currentIndex = getCurrentIndex();
+        const currentStep = steps[currentIndex] || steps[0];
         stepsEl.innerHTML = "";
+        stepSwitcherList.innerHTML = "";
         let activeButton;
 
         steps.forEach((step, index) => {
@@ -1142,14 +1712,31 @@
             button.classList.add("active");
             activeButton = button;
           }
-          if (index < currentIndex) button.classList.add("complete");
           button.innerHTML = `
             <span class="step-number">${index + 1}</span>
             <span class="step-label">${step.label}</span>
           `;
           button.addEventListener("click", () => goToStep(step.id));
           stepsEl.appendChild(button);
+
+          const switcherButton = document.createElement("button");
+          switcherButton.type = "button";
+          switcherButton.className = "switcher-step";
+          switcherButton.classList.toggle("active", step.id === state.currentStep);
+          switcherButton.innerHTML = `
+            <span class="switcher-step-number">${index + 1}</span>
+            <span class="switcher-step-label">${step.label}</span>
+          `;
+          switcherButton.addEventListener("click", () => {
+            closeStepSwitcher();
+            goToStep(step.id);
+          });
+          stepSwitcherList.appendChild(switcherButton);
         });
+
+        mobileStepNumber.textContent = currentIndex + 1;
+        mobileStepLabel.textContent = currentStep.label;
+        mobileStepPosition.textContent = `Step ${currentIndex + 1} of ${steps.length}`;
 
         requestAnimationFrame(() => {
           activeButton?.scrollIntoView({
@@ -1175,20 +1762,82 @@
         reportTitle.classList.remove("hidden");
       };
 
+      const renderAssetFilters = () => {
+        assetFiltersEl.innerHTML = "";
+
+        assetFilters.forEach((filter) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "asset-filter";
+          button.classList.toggle("active", state.assetFilter === filter.id);
+          button.textContent = filter.label;
+          button.addEventListener("click", () => {
+            state.assetFilter = filter.id;
+            renderAssets();
+          });
+          assetFiltersEl.appendChild(button);
+        });
+      };
+
+      const assetMatchesFilter = (asset) => {
+        if (asset.fallback) return false;
+        if (state.assetFilter === "all") return true;
+        if (state.assetFilter === "Unknown") return false;
+        return asset.type === state.assetFilter || asset.area === state.assetFilter;
+      };
+
+      const renderAssetButton = (asset) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "asset-option";
+        button.classList.toggle("selected", asset.id === state.asset);
+        button.dataset.assetId = asset.id;
+        button.innerHTML = `
+          <span class="asset-radio" aria-hidden="true"></span>
+          <span>
+            <span class="asset-title">${asset.title}</span>
+            <span class="asset-meta">${asset.meta} <span class="asset-id">${asset.assetId}</span></span>
+          </span>
+        `;
+        return button;
+      };
+
+      const renderSelectedAsset = () => {
+        const asset = getSelectedAsset();
+        const summaryMeta = asset.fallback
+          ? asset.meta
+          : `${asset.area}, ${asset.type.toLowerCase()} lift`;
+
+        document.getElementById("selectedAssetTitle").textContent = asset.title;
+        document.getElementById("selectedAssetMeta").textContent = summaryMeta;
+        document.getElementById("assetDetailTitle").textContent = asset.title;
+        document.getElementById("assetDetailMeta").textContent = summaryMeta;
+        document.getElementById("assetDetailId").textContent = asset.assetId;
+        document.getElementById("assetDetailArea").textContent = asset.area;
+        document.getElementById("assetDetailType").textContent = asset.type;
+      };
+
       const renderAssets = () => {
         const query = assetSearch.value.trim().toLowerCase();
-        let visibleCount = 0;
-
-        assetOptions.forEach((option) => {
-          const searchableText = option.textContent.toLowerCase();
-          const isFallback = option.dataset.fallback === "true";
-          const matches = isFallback || !query || searchableText.includes(query);
-          option.classList.toggle("hidden", !matches);
-          if (!isFallback && matches) visibleCount += 1;
-          option.classList.toggle("selected", option.dataset.asset === state.asset);
+        const fallbackAsset = assets.find((asset) => asset.fallback);
+        const matches = assets.filter((asset) => {
+          if (asset.fallback) return false;
+          const matchesQuery = !query || asset.keywords.includes(query);
+          return matchesQuery && assetMatchesFilter(asset);
         });
 
-        emptyAssets.classList.toggle("show", query && visibleCount === 0);
+        assetList.innerHTML = "";
+        assetFallback.innerHTML = "";
+        matches.forEach((asset) => assetList.appendChild(renderAssetButton(asset)));
+        if (fallbackAsset) assetFallback.appendChild(renderAssetButton(fallbackAsset));
+
+        assetCount.textContent =
+          matches.length === 1
+            ? "1 lift found"
+            : `${matches.length} lifts found`;
+        emptyAssets.classList.toggle("show", query && matches.length === 0);
+        renderAssetFilters();
+        renderSelectedAsset();
       };
 
       const renderActions = () => {
@@ -1222,12 +1871,55 @@
         });
       });
 
-      assetOptions.forEach((option) => {
-        option.addEventListener("click", () => {
-          state.asset = option.dataset.asset;
-          renderAssets();
-          syncSummary();
-        });
+      const openAssetPicker = () => {
+        assetPicker.classList.add("open");
+        document.body.classList.add("asset-picker-open");
+        requestAnimationFrame(() => assetSearch.focus());
+      };
+
+      const closeAssetPicker = () => {
+        assetPicker.classList.remove("open");
+        document.body.classList.remove("asset-picker-open");
+      };
+
+      openAssetPickerBtn.addEventListener("click", openAssetPicker);
+      closeAssetPickerBtn.addEventListener("click", closeAssetPicker);
+      cancelAssetPickerBtn.addEventListener("click", closeAssetPicker);
+      confirmAssetPickerBtn.addEventListener("click", closeAssetPicker);
+
+      const openStepSwitcher = () => {
+        stepSwitcher.classList.add("open");
+        document.body.classList.add("step-switcher-open");
+      };
+
+      const closeStepSwitcher = () => {
+        stepSwitcher.classList.remove("open");
+        document.body.classList.remove("step-switcher-open");
+      };
+
+      openStepSwitcherBtn.addEventListener("click", openStepSwitcher);
+      closeStepSwitcherBtn.addEventListener("click", closeStepSwitcher);
+      stepSwitcher.addEventListener("click", (event) => {
+        if (event.target === stepSwitcher) closeStepSwitcher();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        closeAssetPicker();
+        closeStepSwitcher();
+      });
+
+      assetPicker.addEventListener("click", (event) => {
+        const option = event.target.closest("[data-asset-id]");
+        if (!option) return;
+
+        state.asset = option.dataset.assetId;
+        renderAssets();
+        syncSummary();
+
+        if (window.matchMedia("(max-width: 820px)").matches) {
+          closeAssetPicker();
+        }
       });
 
       backBtn.addEventListener("click", () => {
@@ -1247,6 +1939,9 @@
         if (currentIndex === steps.length - 1) {
           document.getElementById("reportForm").classList.add("hidden");
           stepsEl.classList.add("hidden");
+          mobileStepControl.classList.add("hidden");
+          closeAssetPicker();
+          closeStepSwitcher();
           document.getElementById("submitResult").classList.add("show");
           document.getElementById("resultTitle").textContent = "Report submitted";
           return;
